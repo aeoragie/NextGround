@@ -1,0 +1,12 @@
+<Project>
+  <ItemGroup>
+    <Content Include="$(SolutionDir)Source\Library\PlayGround.Infrastructure\Logging\Logger.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Configuration\Logger.config</Link>
+    </Content>
+    <Content Include="$(SolutionDir)Source\Library\PlayGround.Infrastructure\Messaging\Messaging.conf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Configuration\Messaging.conf</Link>
+    </Content>
+  </ItemGroup>
+</Project>
