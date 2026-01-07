@@ -5,16 +5,11 @@ namespace Ng.Domain.Enums;
 /// </summary>
 public enum MatchType
 {
-    League,
-    Cup,
-    Friendly,
-    Playoff,
-    Final,
-    SemiFinal,
-    QuarterFinal,
-    RoundOf16,
-    RoundOf32,
-    GroupStage,
-    Qualifier,
-    SuperCup
+    None = 0,
+
+    League = 1,         // 리그
+    Cup = 2,            // 컵대회
+    Friendly = 3,       // 친선경기
+
+    Max
 }
