@@ -8,8 +8,10 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/Dotnet.gitignore
 
 # Build results
-Binary/
-Intermediate/
+Binary/Debug/
+Binary/Release/
+Intermediate/Debug/
+Intermediate/Release/
 
 # .NET
 bin/
