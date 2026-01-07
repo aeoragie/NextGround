@@ -65,5 +65,11 @@
     <Build Include="Schema\Nested.sql" />
     <Build Include="Tables\Users.sql" />
     <Build Include="Tables\UserFamilies.sql" />
+    <Build Include="Tables\AuditLogs.sql" />
+    <Build Include="Tables\EmailVerifications.sql" />
+    <Build Include="Tables\UserRefreshTokens.sql" />
+    <Build Include="Tables\UserSessions.sql" />
+    <Build Include="Tables\UserSocialAccounts.sql" />
+    <Build Include="Tables\UserSocialLinks.sql" />
   </ItemGroup>
 </Project>
