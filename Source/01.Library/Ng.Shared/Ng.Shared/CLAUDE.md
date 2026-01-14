@@ -39,10 +39,4 @@ DTO 및 공통 상수를 담당하는 공유 라이브러리 프로젝트
 - 루트 CLAUDE.md의 코딩 컨벤션 준수
 - DTO는 불변 객체로 설계 (record 타입 권장)
 - 상수는 static readonly 또는 const 사용
-- 모든 public 멤버에 XML 주석 권장
-
-## 빌드
-
-```bash
-dotnet build Source/01.Library/Ng.Shared/Ng.Shared/Ng.Shared.csproj
-```
+- 되도록이면 주석 최소화하고 코드 네이미으로 명확히 표현

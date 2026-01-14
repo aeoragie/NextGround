@@ -17,8 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\01.Library\Ng.Application\Ng.Application.csproj" />
-	  <ProjectReference Include="..\..\01.Library\Ng.Domain\Ng.Domain.csproj" />
+	  <ProjectReference Include="..\..\01.Library\Ng.Shared\Ng.Shared\Ng.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
