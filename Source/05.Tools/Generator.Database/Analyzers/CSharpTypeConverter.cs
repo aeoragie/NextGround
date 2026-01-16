@@ -106,7 +106,7 @@ namespace Generator.Database.Analyzers
                 ValueType.Float => "0.0",
                 ValueType.Boolean => "false",
                 ValueType.String => "String.Empty",
-                ValueType.Vector => "new()",
+                ValueType.Vector => "Array.Empty<byte>()",
                 ValueType.TableType => "null",
                 ValueType.DateTime => "DateTime.MinValue",
                 ValueType.Guid => "Guid.Empty",

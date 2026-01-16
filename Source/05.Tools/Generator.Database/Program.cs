@@ -3,16 +3,15 @@ using Generator.Database.Services;
 using Microsoft.Extensions.Configuration;
 using System.Text;
 
-Console.Title = "PlayGround Database Code Generator";
+Console.Title = "Database Code Generator";
 Console.OutputEncoding = Encoding.UTF8;
 
 try
 {
-    Console.WriteLine("🚀 PlayGround Database Code Generator");
-    Console.WriteLine("=====================================");
+    Console.WriteLine("🚀 Database Code Generator");
+    Console.WriteLine("==========================");
     Console.WriteLine();
 
-    // Configuration 빌드
     var configuration = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
@@ -29,23 +28,34 @@ try
     foreach (var database in dbConfig.Databases)
     {
         var value = database.Value;
-        Console.WriteLine($"   Connection: {MaskConnectionString(value.ConnectionString)}");
-        Console.WriteLine($"   Output Path Table: {value.Paths.TablePath}");
-        Console.WriteLine($"   Output Path Procedure: {value.Paths.ProcedurePath}");
-        Console.WriteLine($"   Generate Tables: {value.Options.GenerateTable}");
-        Console.WriteLine($"   Generate Procedures: {value.Options.GenerateProcedure}");
+        Console.WriteLine($"📦 Database: {database.Key}");
+        Console.WriteLine($"   Output Path: {value.Paths.TablePath}");
+        Console.WriteLine($"   Meta Path: {value.MetaPath}");
+        Console.WriteLine($"   SQL Tables Path: {value.SqlTablesPath}");
         Console.WriteLine();
 
-        Console.WriteLine($"📖 Reading database schema... {database.Key}");
-        var schemaReader = new DatabaseSchemaReader(value.ConnectionString);
-        var schema = await schemaReader.ReadSchemaAsync();
+        if (string.IsNullOrEmpty(value.SqlTablesPath))
+        {
+            Console.WriteLine($"⚠️ Skipping {database.Key}: SqlTablesPath not configured");
+            continue;
+        }
 
-        Console.WriteLine($"✅ Found {schema.Tables.Count} tables and {schema.Procedures.Count} stored procedures");
+        Console.WriteLine($"📖 Reading schema from SQL files...");
+        var sqlFileReader = new SqlFileSchemaReader(value.SqlTablesPath);
+        var tables = sqlFileReader.ReadTablesFromSqlFiles();
+
+        var schema = new Generator.Database.Models.DatabaseSchema
+        {
+            DatabaseName = database.Key,
+            Tables = tables,
+            Procedures = new List<Generator.Database.Models.ProcedureSchema>()
+        };
+
+        Console.WriteLine($"✅ Found {schema.Tables.Count} tables from SQL files");
         Console.WriteLine();
 
-        // 코드 생성
         Console.WriteLine("⚙️ Generating C# code...");
-        var codeGenerator = new CodeGeneratorService(dbConfig.CommonPath, value.Paths);
+        var codeGenerator = new CodeGeneratorService(dbConfig.CommonPath, value.Paths, value.MetaPath);
         var generatedFiles = await codeGenerator.GenerateCodesAsync(database.Key, schema);
 
         Console.WriteLine();
@@ -76,47 +86,10 @@ catch (Exception ex)
 
 static void ShowUsage()
 {
-    Console.WriteLine("Usage:");
-    Console.WriteLine("  Generator.Database <connection-string> <output-path> <namespace> [options]");
-    Console.WriteLine("  Generator.Database <database-name> [options]");
-    Console.WriteLine();
-    Console.WriteLine("Arguments:");
-    //Console.WriteLine("  connection-string  SQL Server connection string");
-    //Console.WriteLine("  output-path        Output directory for generated files");
-    //Console.WriteLine("  namespace          Root namespace for generated code");
-    //Console.WriteLine("  database-name      Database name from appsettings (Accounts, Soccers)");
+    Console.WriteLine("Usage: Generator.Database [options]");
     Console.WriteLine();
     Console.WriteLine("Options:");
-    //Console.WriteLine("  --no-tables        Skip table code generation");
-    //Console.WriteLine("  --no-procedures    Skip stored procedure code generation");
-    Console.WriteLine("  --verbose          Show detailed error information");
+    Console.WriteLine("  --verbose    Show detailed error information");
     Console.WriteLine();
-    Console.WriteLine("Examples:");
-    //Console.WriteLine("  Generator.Database \"Server=.;Database=MyDb;Integrated Security=true\" \"./Generated\" \"MyApp.Database\"");
-    Console.WriteLine("  Generator.Database Accounts");
-    //Console.WriteLine("  Generator.Database Soccers --no-procedures");
-    Console.WriteLine();
-}
-
-static string MaskConnectionString(string connectionString)
-{
-    var masked = connectionString;
-    var passwordPatterns = new[] {
-        @"Password=([^;]+)",
-        @"Pwd=([^;]+)",
-        @"Password\s*=\s*([^;]+)",
-        @"Pwd\s*=\s*([^;]+)"
-    };
-
-    foreach (var pattern in passwordPatterns)
-    {
-        masked = System.Text.RegularExpressions.Regex.Replace(
-            masked,
-            pattern,
-            m => $"{m.Groups[0].Value.Split('=')[0]}=***",
-            System.Text.RegularExpressions.RegexOptions.IgnoreCase
-        );
-    }
-
-    return masked;
+    Console.WriteLine("Configuration is read from appsettings.json");
 }

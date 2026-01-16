@@ -59,6 +59,12 @@
     <Folder Include="Tables" />
     <Folder Include="Tables\Nested" />
     <Folder Include="Schema" />
+    <Folder Include="Procedures" />
+    <Folder Include="Procedures\Account" />
+    <Folder Include="Procedures\Nested" />
+    <Folder Include="Procedures\Session" />
+    <Folder Include="Indexes" />
+    <Folder Include="Meta" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Nested\Exceptions.sql" />
@@ -71,5 +77,25 @@
     <Build Include="Tables\UserSessions.sql" />
     <Build Include="Tables\UserSocialAccounts.sql" />
     <Build Include="Tables\UserSocialLinks.sql" />
+    <Build Include="Procedures\Account\UspCreateUserByEmail.sql" />
+    <Build Include="Procedures\Account\UspCreateUserWithSocialAccount.sql" />
+    <Build Include="Procedures\Account\UspGetUser.sql" />
+    <Build Include="Procedures\Account\UspGetUserByEmail.sql" />
+    <Build Include="Procedures\Account\UspGetUserList.sql" />
+    <Build Include="Procedures\Account\UspGetUserWithSocialAccount.sql" />
+    <Build Include="Procedures\Account\UspUpdateUser.sql" />
+    <Build Include="Procedures\Nested\NspException.sql" />
+    <Build Include="Procedures\Nested\NspGetUser.sql" />
+    <Build Include="Procedures\Nested\NspGetUserWithSocialAccount.sql" />
+    <Build Include="Procedures\Session\UspCreateRefreshToken.sql" />
+    <Build Include="Procedures\Session\UspUpdateLastLogin.sql" />
+    <Build Include="Indexes\Auth_Indexes.sql" />
+    <Build Include="Tables\LoginAttemptLogs.sql" />
+    <Build Include="Tables\PasswordResetTokens.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Meta\Mappings.yaml" />
+    <None Include="Meta\Procedures.yaml" />
+    <None Include="Meta\Tables.yaml" />
   </ItemGroup>
 </Project>

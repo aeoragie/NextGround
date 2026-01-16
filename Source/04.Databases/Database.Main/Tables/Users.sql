@@ -27,6 +27,10 @@
     [AgreedToMarketingAt] DATETIME2 NULL,
     [AgreedToPrivacyAt] DATETIME2 NULL,
 
+    -- 보안: 로그인 실패 추적 (Brute Force 방지)
+    [FailedLoginCount] INT NOT NULL DEFAULT 0,
+    [LockoutEndAt] DATETIME2 NULL,
+
     -- 감사 이력
     [LastLoginAt] DATETIME2 NULL,
     [LastLoginIp] VARCHAR(45) NULL,

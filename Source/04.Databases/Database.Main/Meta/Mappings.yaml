@@ -1,0 +1,117 @@
+# =============================================================
+# Entity → DTO / Message 매핑 규칙
+# Generator.Database에서 DTO, Message 생성 시 참조
+# =============================================================
+
+# 출력 경로 설정
+Output:
+  Entity: Ng.Shared/Persistence/Generated/
+  Dto: Ng.Shared/Dtos/Generated/
+  Message: Ng.Shared/Contracts/Generated/
+
+# =============================================================
+# DTO 정의
+# =============================================================
+Dtos:
+  # 케이스 1: 테이블 기반 - 특정 컬럼 제외
+  UserDto:
+    Description: "사용자 상세 정보"
+    Source: Users
+    Exclude:
+      - PasswordHash
+      - DeletedAt
+      - FailedLoginCount
+      - LockoutEndAt
+
+  # 케이스 2: 테이블 기반 - 특정 컬럼만 포함 (Summary)
+  UserSummaryDto:
+    Description: "사용자 요약 정보 (목록용)"
+    Source: Users
+    Include:
+      - UserId
+      - Email
+      - FullName
+      - NickName
+      - ProfileImageUrl
+      - UserRole
+      - UserStatus
+      - CreatedAt
+
+  # 케이스 3: 다중 테이블 조합
+  UserWithSocialDto:
+    Description: "소셜 계정 포함 사용자 정보"
+    Sources:
+      - Table: Users
+        Prefix: ""                    # 접두사 없음
+        Include:
+          - UserId
+          - Email
+          - FullName
+          - ProfileImageUrl
+          - UserRole
+      - Table: UserSocialAccounts
+        Prefix: Social                # SocialProvider, SocialProviderUserId
+        Include:
+          - Provider
+          - ProviderUserId
+
+  # 케이스 4: 커스텀 (테이블 매핑 없음)
+  TokenResultDto:
+    Description: "토큰 생성 결과"
+    Custom: true
+    Properties:
+      - Name: TokenId
+        Type: Guid
+        Nullable: false
+
+# =============================================================
+# Message 정의 (메시지 큐 Request/Response)
+# =============================================================
+messages:
+  # 케이스 1: Request/Response 쌍
+  CreateRefreshToken:
+    Request:
+      Description: "리프레시 토큰 생성 요청"
+      Properties:
+        - Name: UserId
+          Type: Guid
+        - Name: DeviceInfo
+          Type: string
+          Nullable: true
+        - Name: IpAddress
+          Type: string
+          Nullable: true
+        - Name: ExpiresAt
+          Type: DateTime
+    Response:
+      Description: "리프레시 토큰 생성 응답"
+      Properties:
+        - Name: IsSuccess
+          Type: bool
+        - Name: TokenId
+          Type: Guid
+          Nullable: true
+        - Name: ErrorCode
+          Type: string
+          Nullable: true
+        - Name: ErrorMessage
+          Type: string
+          Nullable: true
+
+# =============================================================
+# 타입 매핑 (SQL → C#)
+# =============================================================
+TypeMappings:
+  uniqueidentifier: Guid
+  varchar: string
+  nvarchar: string
+  int: int
+  bigint: long
+  smallint: short
+  tinyint: byte
+  bit: bool
+  datetime2: DateTime
+  date: DateOnly
+  decimal: decimal
+  float: double
+  varbinary: byte[]

@@ -1,0 +1,28 @@
+# =============================================================
+# Database.Main 테이블 메타데이터
+# SQL 파일의 모든 컬럼을 기본으로 Entity 생성
+# Exclude로 제외할 컬럼 지정
+# =============================================================
+
+Defaults:
+  Schema: dbo
+  Generates:
+    Entity: true
+
+Tables:
+  Users:
+    Description: "사용자 기본 정보"
+    Generates:
+      Entity: UsersEntity
+#    Exclude:
+#      - PasswordHash
+
+  UserSocialAccounts:
+    Description: "소셜 계정 연동 정보"
+    Generates:
+      Entity: UserSocialAccountsEntity
+
+  LoginAttemptLogs:
+    Description: "로그인 시도 기록"
+    Generates:
+      Entity: LoginAttemptLogsEntity
