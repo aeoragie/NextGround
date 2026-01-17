@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="NLog" />
+    <PackageReference Include="NLog.Extensions.Hosting" />
+    <PackageReference Include="NLog.Extensions.Logging" />
+    <PackageReference Include="NLog.Web.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ng.Shared\Ng.Shared\Ng.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

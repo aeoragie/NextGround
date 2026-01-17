@@ -1,0 +1,8 @@
+﻿{
+  "LoggingConfiguration": {
+    "LogLevel": "Debug",
+    "EnableFileLogging": true,
+    "EnableConsoleLogging": false,
+    "MaxArchiveFiles": 30
+  }
+}
